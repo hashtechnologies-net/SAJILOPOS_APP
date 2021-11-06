@@ -2,7 +2,7 @@ const fontConfig = {
     web: {
       regular: {
         fontFamily: 'gotham',
-        fontWeight: 'normal',
+        fontWeight: 'bold',
       },
       medium: {
         fontFamily: 'gotham-medium',

@@ -3,32 +3,34 @@ import React from 'react'
 import { View, Image, StyleSheet } from 'react-native'
 import { Button, Text } from 'react-native-paper';
 import theme from '../config/theme';
-const image = require('../assets/hello-screen.jpg');
-const WelcomeScreen = () => {
+const image = require('../assets/welcome.png');
+const WelcomeScreen = ({ navigation }) => {
     return (
         <>
-        <StatusBar style='dark' />
-        <View style={styles.wrapper}>
-            <Image source={image} style={styles.welcomeImage} />
-            <View style={styles.buttonWrapper}>
-                <Button 
-                    mode="contained" 
-                    onPress={() => console.log('Pressed')} 
-                    uppercase={false} 
-                    children={<Text style={styles.btnLabel}>Log In</Text>}
-                    style={styles.button} />
-                   
-               
-                <Button 
-                    mode="contained" 
-                    onPress={() => console.log('Pressed')} 
-                    style={styles.button} 
-                    color={theme.colors.accent} 
-                    children={<Text style={styles.btnLabel}>Sign Up</Text>}
-                    uppercase={false} />
-               
+            <StatusBar />
+            <View style={styles.wrapper}>
+                <View style={{ width: '100%', height: '75%' }}>
+                    <Image source={image} style={styles.welcomeImage} />
+                </View>
+                <View style={styles.buttonWrapper}>
+                    <Button
+                        mode="contained"
+                        uppercase={false}
+                        onPress={() => navigation.push('LoginScreen')}
+                        children={<Text style={styles.btnLabel}>Log In</Text>}
+                        style={styles.button} />
+
+
+                    <Button
+                        mode="contained"
+                        onPress={() => navigation.push('SignupScreen')}
+                        style={styles.button}
+                        color={theme.colors.accent}
+                        children={<Text style={styles.btnLabel}>Sign Up</Text>}
+                        uppercase={false} />
+
+                </View>
             </View>
-        </View>
         </>
     )
 }
@@ -36,30 +38,31 @@ const WelcomeScreen = () => {
 export default WelcomeScreen
 
 const styles = StyleSheet.create({
-    wrapper:{
-        backgroundColor:'white', 
-        flex:1
+    wrapper: {
+        backgroundColor: 'white',
+        flex: 1
     },
-    welcomeImage:{
-        width: '100%', 
-        height:'75%'
+    welcomeImage: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover'
     },
-    buttonWrapper:{
-        padding: 20, 
-        flexDirection:'column', 
-        height:'24%', 
-        justifyContent:'space-evenly'
+    buttonWrapper: {
+        padding: 20,
+        flexDirection: 'column',
+        height: '24%',
+        justifyContent: 'space-evenly'
     },
-    button:{
-        height:40,
-        justifyContent:'center',
-        alignContent:'center',
-        fontWeight:'900',
+    button: {
+        height: 40,
+        justifyContent: 'center',
+        alignContent: 'center',
+        fontWeight: '900',
     },
-    btnLabel:{
-        fontWeight:'600',
-        color:'white',
-        fontSize:20
+    btnLabel: {
+        fontWeight: '600',
+        color: 'white',
+        fontSize: 20
     }
 
 })
