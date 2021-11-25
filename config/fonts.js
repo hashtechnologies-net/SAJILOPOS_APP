@@ -1,7 +1,12 @@
-const fontConfig = {
+
+
+//   export default fontConfig;
+
+
+  const fontConfig = {
     web: {
       regular: {
-        fontFamily: 'gotham',
+        fontFamily: 'gotham-black',
         fontWeight: 'bold',
       },
       medium: {
@@ -55,4 +60,8 @@ const fontConfig = {
     }
   };
 
-  export default fontConfig;
+
+
+  
+
+export  default  fontConfig;

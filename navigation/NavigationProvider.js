@@ -1,12 +1,26 @@
-import React, { useContext } from 'react'
-import { View, Text } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import React, { useContext, useEffect, useState } from 'react'
 import { Auth } from '../contexts/AuthContext'
 import AppStack from './AppFlow'
 import AuthStack from './AuthFlow'
 
 const NavigationProvider = () => {
-    const AuthContext = useContext(Auth)
-    const isSignedIn = AuthContext.token ? true : false;
+    const [ready, setready] = useState(false)
+    const [isSignedIn, setIsSignedIn] = useState(false)
+    const { isLoggedIn } = useContext(Auth)
+    useEffect(() => {
+            if(isLoggedIn){
+                console.log('signed in')
+                setIsSignedIn(true)
+                setready(true)
+            }
+            else{
+                setIsSignedIn(false)
+                setready(true)
+            }
+    }, [isLoggedIn])
+    
+    
     return isSignedIn ? <AppStack /> : <AuthStack />
 }
 

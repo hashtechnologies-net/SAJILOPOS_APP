@@ -1,15 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
-import { Button, Headline, IconButton, Text, TextInput } from 'react-native-paper'
+import { ActivityIndicator, Button, Headline, IconButton, Snackbar, Text, TextInput } from 'react-native-paper'
 import theme from '../../config/theme'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-
-
-
-
+import { Auth } from '../../contexts/AuthContext'
 const image = require('../../assets/login.png')
 
 const LoginScreen = ({ navigation }) => {
+   
+    const context = useContext(Auth)
+
     return (
         <View style={{ backgroundColor:theme.colors.background, flex:1, alignItems:'stretch' }}>
         <View style={{ flex:1, height:'60%',  }}>
@@ -31,29 +31,50 @@ const LoginScreen = ({ navigation }) => {
          <View style={{ alignItems:'stretch', width:'100%', justifyContent:'center', paddingHorizontal:30 }}>
              
          <TextInput
-      value=''
-      mode='outlined'
-      placeholder='Enter your email'
-      style={{ marginBottom:10 }}
-      left={<TextInput.Icon name='email' color={theme.colors.accent } size={25} />}
-    />
-    <TextInput
-      value=''
-      mode='outlined'
-      password={true}
-      placeholder='**********'
-      right={<TextInput.Icon name="eye" color={theme.colors.accent } size={25} />}
-      left={<TextInput.Icon name='lock' color={theme.colors.accent } size={25} />}
-      style={{ marginBottom:15 }}
+                        value={context.Email}
+                        mode='outlined'
+                        placeholder='Enter Your Email'
+                        style={{ marginBottom: 10 }}
+                        left={<TextInput.Icon name='email' color={theme.colors.accent} size={25} />}
+                        onChangeText={(text) => context.setEmail(text)}
+                        keyboardType='email-address'
+                        textContentType='emailAddress'
 
-    />
-    <Button mode='contained' color={ theme.colors.primary } style={{ height:40, justifyContent:'center' }}>
-        <Text style={{ color:'white', fontWeight:'700' }}>Login</Text>
-    </Button>
+                    />
+    <TextInput
+                        value={context.Password}
+                        mode='outlined'
+                        password={true}
+                        placeholder='Enter password'
+                        right={<TextInput.Icon name="eye" color={theme.colors.accent} size={25} onPress={() => context.setshowPass(!context.showPass)} />}
+                        left={<TextInput.Icon name='lock' color={theme.colors.accent} size={25} />}
+                        style={{ marginBottom: 10 }}
+                        onChangeText={(text) => context.setPassword(text)}
+                        textContentType='password'
+                        autoCompleteType='password'
+                        keyboardType='default'
+                        passwordRules='[A-Z]{1}[a-z]{1}[0-9]{1}[!@#$%^&*]{1}'
+                        passwordRulesDescription='Must contain at least one uppercase, lowercase, number and special character'
+                        password={true}
+                        passswordRules={true}
+                        PasswordRulesDescription={true}
+                        secureTextEntry={context.showPass}
+                    />
+   {context.loading ? <ActivityIndicator size='small' animating={true} style={{ backgroundColor: theme.colors.primary, height: 40 }} color='white' /> :
+                        <Button mode='contained' color={theme.colors.primary} style={{ height: 40, justifyContent: 'center' }} onPress={() => context.HandleLogin()}>
+                            <Text style={{ color: 'white', fontWeight: '700' }}>Log in</Text>
+                        </Button>}
     <TouchableOpacity>
         <Text style={{ color:theme.colors.accent, textAlign:'center', marginTop:15 }}>Forgot password?</Text>
     </TouchableOpacity>
          </View>
+
+         {context.hasErrors ? <Snackbar style={{ justifyContent: 'center', marginBottom: 10 }} visible={true} onDismiss={() => context.setHasErrors(false)} action={{
+                    label: 'Okay',
+                    onPress: () => {
+                        context.setHasErrors(false)
+                    },
+                }}>{context.errors}</Snackbar> : null}
      </View>
      </View>
     )
@@ -84,9 +105,10 @@ const styles = StyleSheet.create({
     },
     text:{
         fontSize:40, 
-        fontWeight:'bold',
+        // fontWeight:'bold',
         color:'white',
-        paddingTop:30
+        paddingTop:30,
+        fontFamily:'gotham-black'
     },
     subText:{
         fontSize:23,

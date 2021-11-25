@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
-import { Button, Headline, IconButton, Text, TextInput } from 'react-native-paper'
+import { ActivityIndicator, Button, Headline, IconButton, Snackbar, Text, TextInput } from 'react-native-paper'
 import theme from '../../config/theme'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import {Auth} from '../../contexts/AuthContext'
+import { Auth } from '../../contexts/AuthContext'
 const image = require('../../assets/signup.png')
 
 const SignupScreen = ({ navigation }) => {
-const context = useContext(Auth)
-useEffect(() => {
-    context.setNavigation(navigation);
-}, [])
+
+    const context = useContext(Auth)
+ 
 
     return (
         <View style={{ backgroundColor: theme.colors.background, flex: 1, alignItems: 'stretch' }}>
@@ -52,14 +51,14 @@ useEffect(() => {
                         onChangeText={(text) => context.setEmail(text)}
                         keyboardType='email-address'
                         textContentType='emailAddress'
-                       
+
                     />
                     <TextInput
                         value={context.Password}
                         mode='outlined'
                         password={true}
                         placeholder='Enter password'
-                        right={<TextInput.Icon name="eye" color={theme.colors.accent} size={25} onPress={()=>context.setshowPass(!context.showPass)} />}
+                        right={<TextInput.Icon name="eye" color={theme.colors.accent} size={25} onPress={() => context.setshowPass(!context.showPass)} />}
                         left={<TextInput.Icon name='lock' color={theme.colors.accent} size={25} />}
                         style={{ marginBottom: 10 }}
                         onChangeText={(text) => context.setPassword(text)}
@@ -72,23 +71,47 @@ useEffect(() => {
                         passswordRules={true}
                         PasswordRulesDescription={true}
                         secureTextEntry={context.showPass}
+                        
                     />
+
                     <TextInput
-                        value=''
+                        value={context.Password2}
                         mode='outlined'
                         password={true}
-                        placeholder='Re-enter password'
-                        right={<TextInput.Icon name="eye" color={theme.colors.accent} size={25} />}
+                        placeholder='Re-enter Password'
+                        right={<TextInput.Icon name="eye" color={theme.colors.accent} size={25} onPress={() => context.setshowPass2(!context.showPass2)} />}
                         left={<TextInput.Icon name='lock' color={theme.colors.accent} size={25} />}
-                        style={{ marginBottom: 15 }}
-
+                        style={{ marginBottom: 10 }}
+                        onChangeText={(text) => context.setPassword2(text)}
+                        textContentType='password'
+                        autoCompleteType='password'
+                        keyboardType='default'
+                        passwordRules='[A-Z]{1}[a-z]{1}[0-9]{1}[!@#$%^&*]{1}'
+                        passwordRulesDescription='Must contain at least one uppercase, lowercase, number and special character'
+                        password={true}
+                        passswordRules={true}
+                        PasswordRulesDescription={true}
+                        secureTextEntry={context.showPass2}
                     />
-                    <Button mode='contained' color={theme.colors.primary} style={{ height: 40, justifyContent: 'center' }} onPress={()=>context.HandleRegister()}>
-                        <Text style={{ color: 'white', fontWeight: '700' }}>Sign Up</Text>
-                    </Button>
-                    
+
+                    {context.loading ? <ActivityIndicator size='small' animating={true} style={{ backgroundColor: theme.colors.primary, height: 40 }} color='white' /> :
+                        <Button mode='contained' color={theme.colors.primary} style={{ height: 40, justifyContent: 'center' }} onPress={() => context.HandleRegister()}>
+                            <Text style={{ color: 'white', fontWeight: '700' }}>Sign Up</Text>
+                        </Button>}
+
+
                 </View>
+                {(context.hasErrors && context.errors) ? 
+                <Snackbar style={{ justifyContent: 'center', marginBottom: 10 }} visible={true} onDismiss={() => context.setHasErrors(false)} action={{
+                    label: 'Okay',
+                    onPress: () => {
+                        context.setHasErrors(false)
+                    },
+                }}>{context.errors ? context.errors : null}</Snackbar> 
+
+: null}
             </View>
+
         </View>
     )
 }
