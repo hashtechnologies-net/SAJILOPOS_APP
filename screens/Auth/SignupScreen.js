@@ -101,13 +101,14 @@ const SignupScreen = ({ navigation }) => {
 
 
                 </View>
-                {(context.hasErrors && context.errors) ? 
+                {(context.hasErrors && context.errors!=={}) ? 
                 <Snackbar style={{ justifyContent: 'center', marginBottom: 10 }} visible={true} onDismiss={() => context.setHasErrors(false)} action={{
                     label: 'Okay',
                     onPress: () => {
                         context.setHasErrors(false)
                     },
-                }}>{context.errors ? context.errors : null}</Snackbar> 
+                }}>{ context?.errors }</Snackbar> 
+                // console.log(context.errors)
 
 : null}
             </View>

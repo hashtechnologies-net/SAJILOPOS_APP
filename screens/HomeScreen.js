@@ -10,7 +10,6 @@ const image = require('../assets/4v2.png')
 const Drawer = createDrawerNavigator();
 
 
-
 const HomeScreen = () => {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
